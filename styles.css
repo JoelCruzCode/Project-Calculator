@@ -23,7 +23,7 @@ button {
   flex-direction: column;
 }
 
-.display {
+.display-container {
   display: flex;
   width: 600px;
   height: 200px;
