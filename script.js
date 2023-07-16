@@ -1,6 +1,6 @@
 // To do List:
-// 1.) seperate equal button from event listener
-// 2.) make calculate work
+// 1.) seperate equal button from event listener // Finished
+// 2.) make calculate work // Finished
 // 3.) add exponent and modulo/squareroot functionality/
 
 let firstNum = ``;
@@ -55,11 +55,15 @@ const clear = function () {
   firstNum = "";
   secondNum = "";
   operation = "";
+  sum = "";
 };
 
 // Event Listeners
 arithmetics.forEach((btn) =>
   btn.addEventListener("click", (e) => {
+    if (sum) {
+      firstNum = sum;
+    }
     operation = e.target.textContent;
     displayContent(`${firstNum} ${operation} `);
   })
@@ -82,6 +86,7 @@ clearBtn.addEventListener("click", clear);
 equalBtn.addEventListener("click", function (e) {
   operate(operation, firstNum, secondNum);
   displayContent(`${firstNum} ${operation} ${secondNum} = ${sum}`);
+  secondNum = "";
 });
 
 //////////////////////////////////////////////////////////
