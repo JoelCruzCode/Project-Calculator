@@ -6,6 +6,7 @@
 let firstNum = ``;
 let secondNum = ``;
 let operation = ``;
+let sum;
 
 const numbers = document.querySelectorAll(".number");
 const subBtn = document.querySelector(".subtract");
@@ -19,9 +20,9 @@ const clearBtn = document.querySelector(".clear");
 const display = document.querySelector(".display");
 
 // Math Operations
-const add = (a, b) => a + b;
+const add = (a, b) => Number(a) + Number(b);
 
-const subtract = (a, b) => a - b;
+const subtract = (a, b) => Number(a) - Number(b);
 
 const multiply = (a, b) => a * b;
 
@@ -33,14 +34,16 @@ const operate = function (
   num2 = secondNum
 ) {
   if (operator === "-") {
-    return subtract(num1, num2);
+    sum = subtract(num1, num2);
   } else if (operator === "+") {
-    return add(num1, num2);
+    sum = add(num1, num2);
   } else if (operator === "*") {
-    return multiply(num1, num2);
+    sum = multiply(num1, num2);
   } else if (operator === "/") {
-    return divide(num1, num2);
+    sum = divide(num1, num2);
   }
+  console.log(sum);
+  return sum;
 };
 
 const displayContent = function (content) {
@@ -76,7 +79,10 @@ numbers.forEach((btn) =>
 
 clearBtn.addEventListener("click", clear);
 
-// equalBtn.addEventListener("click");
+equalBtn.addEventListener("click", function (e) {
+  operate(operation, firstNum, secondNum);
+  displayContent(`${firstNum} ${operation} ${secondNum} = ${sum}`);
+});
 
 //////////////////////////////////////////////////////////
 
