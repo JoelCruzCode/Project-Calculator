@@ -1,9 +1,11 @@
 // To do List:
 // 1.) seperate equal button from event listener
+// 2.) make calculate work
+// 3.) add exponent and modulo/squareroot functionality/
 
-let firstNum;
-let secondNum;
-let operation;
+let firstNum = ``;
+let secondNum = ``;
+let operation = ``;
 
 const numbers = document.querySelectorAll(".number");
 const subBtn = document.querySelector(".subtract");
@@ -25,7 +27,11 @@ const multiply = (a, b) => a * b;
 
 const divide = (a, b) => a / b;
 
-const operate = function (operator, num1, num2) {
+const operate = function (
+  operator = operation,
+  num1 = firstNum,
+  num2 = secondNum
+) {
   if (operator === "-") {
     return subtract(num1, num2);
   } else if (operator === "+") {
@@ -38,7 +44,7 @@ const operate = function (operator, num1, num2) {
 };
 
 const displayContent = function (content) {
-  display.textContent += ` ${content}`;
+  display.textContent = content;
 };
 
 const clear = function () {
@@ -52,23 +58,25 @@ const clear = function () {
 arithmetics.forEach((btn) =>
   btn.addEventListener("click", (e) => {
     operation = e.target.textContent;
-    displayContent(operation);
+    displayContent(`${firstNum} ${operation} `);
   })
 );
 
 numbers.forEach((btn) =>
   btn.addEventListener("click", (e) => {
-    if (!firstNum) {
-      firstNum = e.target.textContent;
+    if (!operation) {
+      firstNum += e.target.textContent;
       displayContent(firstNum);
     } else {
-      secondNum = e.target.textContent;
-      displayContent(secondNum);
+      secondNum += e.target.textContent;
+      displayContent(`${firstNum} ${operation} ${secondNum}`);
     }
   })
 );
 
 clearBtn.addEventListener("click", clear);
+
+// equalBtn.addEventListener("click");
 
 //////////////////////////////////////////////////////////
 
