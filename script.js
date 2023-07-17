@@ -1,6 +1,7 @@
 // To do List:
 // 1.) seperate equal button from event listener // Finished
 // 2.) make calculate work // Finished
+// 3.) fix issue with if there is a sum dont add
 // 3.) add exponent and modulo/squareroot functionality/
 
 let firstNum = ``;
@@ -42,7 +43,7 @@ const operate = function (
   } else if (operator === "/") {
     sum = divide(num1, num2);
   }
-  console.log(sum);
+  console.log("sum:", sum);
   return sum;
 };
 
@@ -61,21 +62,41 @@ const clear = function () {
 // Event Listeners
 arithmetics.forEach((btn) =>
   btn.addEventListener("click", (e) => {
-    if (sum) {
+    if (!operation && sum) {
       firstNum = sum;
+    } else if (!sum && operation) {
+      // chaining operations here
+      firstNum = operate(operation, firstNum, secondNum);
+      sum = firstNum;
+      sum = "";
+      secondNum = "";
     }
+    // Dont need this
+    // else if (firstNum & secondNum && operation) {
+    //   // nani
+    //   first = operate(operation, sum, secondNum);
+    //   operation = "";
+    // }
     operation = e.target.textContent;
+    console.log("operation:", operation);
     displayContent(`${firstNum} ${operation} `);
   })
 );
 
 numbers.forEach((btn) =>
   btn.addEventListener("click", (e) => {
-    if (!operation) {
+    // creates first number entry to be used in calculator
+    if (!operation && !sum) {
       firstNum += e.target.textContent;
+      console.log("first", firstNum);
       displayContent(firstNum);
+      // stops user from entering numbers after calc, needs another operator to continue
+    } else if (!operation && sum) {
+      return;
+      // creates second number to be used in calculation
     } else {
       secondNum += e.target.textContent;
+      console.log("second:", secondNum);
       displayContent(`${firstNum} ${operation} ${secondNum}`);
     }
   })
@@ -87,8 +108,14 @@ equalBtn.addEventListener("click", function (e) {
   operate(operation, firstNum, secondNum);
   displayContent(`${firstNum} ${operation} ${secondNum} = ${sum}`);
   secondNum = "";
+  firstNum = sum;
+  operation = "";
 });
-
+// find out a way to make numbers.event to stop listening after calculating
+//and force it to need another operation before putting in numbers
+//
+// i could possibly stop listening to numbers event after calculating and
+//relisten after arithmetic operator event
 //////////////////////////////////////////////////////////
 
 // const createNumbers = function () {
