@@ -13,7 +13,8 @@ const subBtn = document.querySelector(".subtract");
 const addBtn = document.querySelector(".add");
 const multBtn = document.querySelector(".multiply");
 const divBtn = document.querySelector(".divide");
-const arithmetics = [subBtn, addBtn, multBtn, divBtn];
+const expBtn = document.querySelector(".exponent");
+const arithmetics = [subBtn, addBtn, multBtn, divBtn, expBtn];
 const equalBtn = document.querySelector(".equal");
 const clearBtn = document.querySelector(".clear");
 const display = document.querySelector(".display");
@@ -26,6 +27,14 @@ const subtract = (a, b) => Number(a) - Number(b);
 const multiply = (a, b) => a * b;
 
 const divide = (a, b) => a / b;
+
+const exponent = (a, b) => {
+  sum = 1;
+  for (i = 1; i <= b; i++) {
+    sum *= a;
+  }
+  return sum;
+};
 
 const operate = function (
   operator = operation,
@@ -40,8 +49,9 @@ const operate = function (
     sum = multiply(num1, num2);
   } else if (operator === "/") {
     sum = divide(num1, num2);
+  } else if (operator === "^") {
+    sum = exponent(num1, num2);
   }
-  console.log("sum:", sum);
   return sum;
 };
 
@@ -72,7 +82,6 @@ arithmetics.forEach((btn) =>
       secondNum = "";
     }
     operation = e.target.textContent;
-    console.log("operation:", operation);
     displayContent(`${firstNum} ${operation} `);
   })
 );
@@ -82,7 +91,6 @@ numbers.forEach((btn) =>
     // creates first number to be used in calculator
     if (!operation && !sum) {
       firstNum += e.target.textContent;
-      console.log("first", firstNum);
       displayContent(firstNum);
       // stops user from entering numbers after a calculation, requires operator to proceed
     } else if (!operation && sum) {
@@ -91,7 +99,6 @@ numbers.forEach((btn) =>
     } else {
       sum = "";
       secondNum += e.target.textContent;
-      console.log("second:", secondNum);
       displayContent(`${firstNum} ${operation} ${secondNum}`);
     }
   })

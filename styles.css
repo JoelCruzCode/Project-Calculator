@@ -23,6 +23,12 @@ button {
   flex-direction: column;
 }
 
+.calculator {
+  border: 10px solid gold;
+  width: 800px;
+  height: 800px;
+}
+
 .display-container {
   display: flex;
   width: 600px;
@@ -31,7 +37,7 @@ button {
   justify-content: center;
 }
 
-.calculator {
+.calc-buttons {
   width: 600px;
   display: flex;
   flex-wrap: wrap;
