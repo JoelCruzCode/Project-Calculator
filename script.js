@@ -77,7 +77,7 @@ arithmetics.forEach((btn) =>
       // chaining operations here
     } else if (!sum && operation) {
       firstNum = operate(operation, firstNum, secondNum);
-      sum = firstNum;
+      // sum = firstNum;
       sum = "";
       secondNum = "";
     }
@@ -88,6 +88,12 @@ arithmetics.forEach((btn) =>
 
 numbers.forEach((btn) =>
   btn.addEventListener("click", (e) => {
+    // stops user from inputting mutliple decimals in an entry
+    if (!secondNum) {
+      if (e.target.textContent === "." && firstNum.includes(".")) return;
+    }
+    if (secondNum.includes(".") && e.target.textContent === ".") return;
+
     // creates first number to be used in calculator
     if (!operation && !sum) {
       firstNum += e.target.textContent;
