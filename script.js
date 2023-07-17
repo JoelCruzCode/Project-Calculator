@@ -1,7 +1,5 @@
 // To do List:
-// 1.) seperate equal button from event listener // Finished
-// 2.) make calculate work // Finished
-// 3.) fix issue with if there is a sum dont add
+
 // 3.) add exponent and modulo/squareroot functionality/
 
 let firstNum = ``;
@@ -9,13 +7,13 @@ let secondNum = ``;
 let operation = ``;
 let sum;
 
+// Nodes
 const numbers = document.querySelectorAll(".number");
 const subBtn = document.querySelector(".subtract");
 const addBtn = document.querySelector(".add");
 const multBtn = document.querySelector(".multiply");
 const divBtn = document.querySelector(".divide");
 const arithmetics = [subBtn, addBtn, multBtn, divBtn];
-//
 const equalBtn = document.querySelector(".equal");
 const clearBtn = document.querySelector(".clear");
 const display = document.querySelector(".display");
@@ -47,6 +45,7 @@ const operate = function (
   return sum;
 };
 
+// Helper Functions
 const displayContent = function (content) {
   display.textContent = content;
 };
@@ -62,21 +61,16 @@ const clear = function () {
 // Event Listeners
 arithmetics.forEach((btn) =>
   btn.addEventListener("click", (e) => {
+    // preps sum to be used for next calculation
     if (!operation && sum) {
       firstNum = sum;
-    } else if (!sum && operation) {
       // chaining operations here
+    } else if (!sum && operation) {
       firstNum = operate(operation, firstNum, secondNum);
       sum = firstNum;
       sum = "";
       secondNum = "";
     }
-    // Dont need this
-    // else if (firstNum & secondNum && operation) {
-    //   // nani
-    //   first = operate(operation, sum, secondNum);
-    //   operation = "";
-    // }
     operation = e.target.textContent;
     console.log("operation:", operation);
     displayContent(`${firstNum} ${operation} `);
@@ -85,16 +79,17 @@ arithmetics.forEach((btn) =>
 
 numbers.forEach((btn) =>
   btn.addEventListener("click", (e) => {
-    // creates first number entry to be used in calculator
+    // creates first number to be used in calculator
     if (!operation && !sum) {
       firstNum += e.target.textContent;
       console.log("first", firstNum);
       displayContent(firstNum);
-      // stops user from entering numbers after calc, needs another operator to continue
+      // stops user from entering numbers after a calculation, requires operator to proceed
     } else if (!operation && sum) {
       return;
-      // creates second number to be used in calculation
+      // creates second number to be used in calculator
     } else {
+      sum = "";
       secondNum += e.target.textContent;
       console.log("second:", secondNum);
       displayContent(`${firstNum} ${operation} ${secondNum}`);
@@ -104,6 +99,7 @@ numbers.forEach((btn) =>
 
 clearBtn.addEventListener("click", clear);
 
+// Calculates operation
 equalBtn.addEventListener("click", function (e) {
   operate(operation, firstNum, secondNum);
   displayContent(`${firstNum} ${operation} ${secondNum} = ${sum}`);
@@ -111,54 +107,3 @@ equalBtn.addEventListener("click", function (e) {
   firstNum = sum;
   operation = "";
 });
-// find out a way to make numbers.event to stop listening after calculating
-//and force it to need another operation before putting in numbers
-//
-// i could possibly stop listening to numbers event after calculating and
-//relisten after arithmetic operator event
-//////////////////////////////////////////////////////////
-
-// const createNumbers = function () {
-//   for (i = 0; i < 10; i++) {
-//     let num = document.createElement("button");
-//     num.textContent = i;
-//     caclculator.append(num);
-//   }
-// };
-
-// const exponent = (a, b) => {
-//     let sum = 1;
-//     for (i = 1; i <= b; i++) sum *= a;
-//     return sum;
-//   };
-
-//   const root = (a, b) => {};
-
-// createNumbers();
-
-/////////////////////
-
-// const buttons = document.querySelectorAll("button");
-// const squareBtn = document.querySelector(".square-root");
-// const expBtn = document.querySelector(".exponent");
-//
-// const displayContent = function (content) {
-//     display.textContent += ` ${content}`;
-//   };
-//   // Event Listeners
-//   buttons.forEach((btn) =>
-//     btn.addEventListener("click", function (e) {
-//       if (e.target.className != "number") {
-//         operation = e.target.textContent;
-//         displayContent(operation);
-//       } else if ((e.target.className = "number")) {
-//         if (!firstNum) {
-//           firstNum = e.target.textContent;
-//           displayContent(firstNum);
-//         } else {
-//           secondNum = e.target.textContent;
-//           displayContent(secondNum);
-//         }
-//       }
-//     })
-//   );
