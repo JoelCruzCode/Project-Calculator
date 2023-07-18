@@ -76,9 +76,12 @@ const clear = function () {
   sum = "";
 };
 
-// const checkForDecimal = function (entry, event) {
-//   if (event.target.textContent === "." && entry.includes(".")) return true;
-// };
+const includesDecimal = function (event, entry1, entry2) {
+  if (!entry2) {
+    if (event.target.textContent === "." && entry1.includes(".")) return true;
+  }
+  if (event.target.textContent === "." && entry2.includes(".")) return true;
+};
 
 // Event Listeners
 arithmetics.forEach((btn) =>
@@ -101,15 +104,8 @@ arithmetics.forEach((btn) =>
 
 numbers.forEach((btn) =>
   btn.addEventListener("click", (e) => {
-    console.log(this);
-    console.log(e);
-    console.log(e.target);
     // stops user from inputting mutliple decimals in an entry
-    if (!secondNum) {
-      if (e.target.textContent === "." && firstNum.includes(".")) return;
-      // if (checkForDecimal(firstNum, e)) return;
-    }
-    if (secondNum.includes(".") && e.target.textContent === ".") return;
+    if (includesDecimal(e, firstNum, secondNum)) return;
 
     // creates first number to be used in calculator
     if (!operation && !sum) {
