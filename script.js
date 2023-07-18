@@ -1,10 +1,9 @@
 // To do List:
-// 1.) make sure numbers stay within display // finished
-// 2.) create second div in display to seperate entries from results
-// 3.) add delete function
-// 4.) stop decimals from trailing past a certain limit // finished
-// 5.) improve CSS + add flex sizing
-
+// 1.) add delete function(backspace)
+// 2.) improve CSS: add hover & onclick styles
+// 3.) Improve flexbox properties for shrinking and growing
+// 4.) round numbers after a certain decimal point
+// 5.) Add Keyboard support
 let firstNum = ``;
 let secondNum = ``;
 let operation = ``;
@@ -21,7 +20,7 @@ const arithmetics = [subBtn, addBtn, multBtn, divBtn, expBtn];
 const equalBtn = document.querySelector(".equal");
 const clearBtn = document.querySelector(".clear");
 const display = document.querySelector(".display");
-
+const resultDisplay = document.querySelector(".result");
 // Math Operations
 const add = (a, b) => Number(a) + Number(b);
 
@@ -59,8 +58,11 @@ const operate = function (
 };
 
 // Helper Functions
-const displayContent = function (content) {
+const displayContent = function (content, result = false) {
   display.textContent = content;
+  if (result) {
+    resultDisplay.textContent = result;
+  }
 };
 
 const checkLength = function (content) {
@@ -74,6 +76,7 @@ const clear = function () {
   secondNum = "";
   operation = "";
   sum = "";
+  resultDisplay.textContent = "";
 };
 
 const includesDecimal = function (event, entry1, entry2) {
@@ -86,19 +89,24 @@ const includesDecimal = function (event, entry1, entry2) {
 // Event Listeners
 arithmetics.forEach((btn) =>
   btn.addEventListener("click", (e) => {
-    console.log(display.textContent.length);
     // preps sum to be used for next calculation
     if (!operation && sum) {
       firstNum = sum;
+      operation = e.target.textContent;
+      displayContent(`${firstNum} ${operation}`);
       // chaining operations here
     } else if (!sum && operation) {
-      firstNum = operate(operation, firstNum, secondNum);
-      // sum = firstNum;
+      // firstNum = operate(operation, firstNum, secondNum);
+      sum = operate(operation, firstNum, secondNum);
+      displayContent(`${firstNum} ${operation} ${secondNum} =`, sum);
+      firstNum = sum;
       sum = "";
       secondNum = "";
+      operation = e.currentTarget.textContent;
+    } else if (!sum && !operation) {
+      operation = e.target.textContent;
+      displayContent(`${firstNum} ${operation}`);
     }
-    operation = e.target.textContent;
-    displayContent(`${firstNum} ${operation} `);
   })
 );
 
@@ -116,6 +124,7 @@ numbers.forEach((btn) =>
       return;
       // creates second number to be used in calculator
     } else {
+      sum = "";
       checkLength(secondNum) ? (secondNum += e.target.textContent) : secondNum;
       displayContent(`${firstNum} ${operation} ${secondNum}`);
     }
@@ -125,12 +134,10 @@ numbers.forEach((btn) =>
 // Calculates operation
 equalBtn.addEventListener("click", function (e) {
   operate(operation, firstNum, secondNum);
-  displayContent(`${firstNum} ${operation} ${secondNum} = ${sum}`);
+  displayContent(`${firstNum} ${operation} ${secondNum} = `, sum);
   secondNum = "";
   firstNum = sum;
   operation = "";
 });
 // Clears display and resets variables to undefined
 clearBtn.addEventListener("click", clear);
-
-// sum = ""; might remove ? this might need it was previously on line 116 under else condition for numbers
